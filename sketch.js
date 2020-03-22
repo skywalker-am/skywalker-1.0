@@ -59,8 +59,8 @@ function setup() {
   
   score = 0;
   
-  gameOver = createSprite(200,300);
-  restart = createSprite(200,340);
+  gameOver = createSprite(300,50);
+  restart = createSprite(300,100);
   gameOver.addImage(gameOverImg);
   gameOver.scale = 0.5;
   restart.addImage(restartImg);
@@ -75,9 +75,6 @@ function draw() {
   
   if(gameState === PLAY){
     ground.velocityX = -(4 + 3*score/100);
-    
-    //scoring
-    text("score "+score,250,50);
     
     score= score +
     Math.round(getFrameRate()/60);    
@@ -127,21 +124,24 @@ function draw() {
     
     //set lifetime of the game objects so that they are never destroyed
     obstaclesGroup.setLifetimeEach(-1);
-    cloudsGroup.setLifetimeEach(-1);  
+    cloudsGroup.setLifetimeEach(-1); 
+    
+    if(mousePressedOver(restart)) {
+      reset();
+    }
   }  
-  
-  
-  if(mousePressedOver(restart)) {
-    reset();
-     trex.changeAnimation("running" , trex_running );
-  }
   
   //console.log(trex.y);
   
   //stop trex from falling down
   trex.collide(invisibleGround);
   
+  //scoring
+  textSize(20);
+  fill("black");
+  text("score "+score,475,35);
   drawSprites();
+  
 }
 
 function spawnClouds() {
@@ -206,7 +206,7 @@ function reset(){
   obstaclesGroup.destroyEach();
   cloudsGroup.destroyEach();
   
-  trex.setAnimation("trex");
+  trex.changeAnimation("running",trex_running );
   
   score= 0; 
 }
